@@ -1,8 +1,16 @@
-,env
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
+# Environments
 .env
-__pycache__/
-*.pyc
-.env
-__pycache__/
-*.pyc
+.venv
+venv/
+ENV/
+env.bak
+env.resource
+
+# IDEs
+.vscode/
+.idea/
