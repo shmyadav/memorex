@@ -44,7 +44,33 @@ cp .env.example .env
 
 Edit the `.env` file with your **OPENAI_API_KEY** and **Neo4j** connection details.
 
-### 3. Run MemoRex
+## Running with Docker (Recommended)
+
+The easiest way to run MemoRex along with a Neo4j database is using Docker Compose. This resolves any local connection issues and ensures a consistent environment.
+
+### 1. Build and Start
+
+```bash
+# Start Neo4j and the MemoRex application
+docker-compose up --build
+```
+
+### 2. Access Neo4j Browser
+
+You can access the Neo4j management UI at:
+[http://localhost:7474](http://localhost:7474)
+
+- **Username**: `neo4j`
+- **Password**: `password` (default)
+
+### 3. Note on Hostnames
+
+When running the application inside Docker, set your **NEO4J_URI** in `.env` to:
+`bolt://neo4j:7687`
+
+The `app` container uses the service name `neo4j` to communicate with the database.
+
+## Running Locally
 
 You can run the example simulation in `main.py`:
 
