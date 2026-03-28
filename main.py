@@ -68,11 +68,11 @@ class Memorex:
             If not provided, a default Neo4jDriver will be initialized.
         max_coroutines : int | None, optional
             The maximum number of concurrent operations allowed. Overrides SEMAPHORE_LIMIT set in the environment.
-            If not set, the Graphiti default is used.
+            If not set, the Memorex default is used.
         tracer : Tracer | None, optional
             An OpenTelemetry tracer instance for distributed tracing. If not provided, tracing is disabled (no-op).
         trace_span_prefix : str, optional
-            Prefix to prepend to all span names. Defaults to 'graphiti'.
+            Prefix to prepend to all span names. Defaults to 'memorex'.
 
         Returns
         -------
@@ -90,7 +90,7 @@ class Memorex:
 
         The OpenAI API key is expected to be set in the environment variables.
         Make sure to set the OPENAI_API_KEY environment variable before initializing
-        Graphiti if you're using the default OpenAIClient.
+        Memorex if you're using the default OpenAIClient.
         """
         if uri is None or user is None or password is None:
             uri = os.getenv('NEO4J_URI', 'bolt://localhost:7687')
@@ -117,7 +117,7 @@ class Memorex:
         # Initialize tracer
 
 
-        self.clients = GraphitiClients(
+        self.clients = MemorexClients(
             driver=self.driver,
             llm_client=self.llm_client,
             embedder=self.embedder,
@@ -193,7 +193,7 @@ class Memorex:
         Example using FastAPI background tasks:
             @app.post("/add_episode")
             async def add_episode_endpoint(episode_data: EpisodeData):
-                background_tasks.add_task(graphiti.add_episode, **episode_data.dict())
+                background_tasks.add_task(memorex.add_episode, **episode_data.dict())
                 return {"message": "Episode processing started"}
         """
         now = datetime.now()
@@ -421,16 +421,16 @@ async def main():
     #################################################
     # INITIALIZATION
     #################################################
-    # Connect to Neo4j and set up Graphiti indice
-    # This is required before using other Graphiti
+    # Connect to Neo4j and set up Memorex indices
+    # This is required before using other Memorex
     # functionality
     #################################################
 
-    # Initialize Graphiti with Neo4j connection
-    graphiti = Memorex()
+    # Initialize Memorex with Neo4j connection
+    memorex = Memorex()
 
-    # await graphiti.driver.build_indices_and_constraints()
-    await graphiti.add_episode(
+    # await memorex.driver.build_indices_and_constraints()
+    await memorex.add_episode(
         uuid="123",
         name="Whatsupp",
         episode_body="Dosa is my comfort food and Idli is my favorite food",

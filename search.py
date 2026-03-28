@@ -11,7 +11,7 @@ EMBEDDING_DIM = int(os.getenv('EMBEDDING_DIM', 1024))
 
 
 async def search(
-    clients: GraphitiClients,
+    clients: MemorexClients,
     query: str,
     group_ids: list[str] | None,
     config: SearchConfig,

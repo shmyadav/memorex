@@ -5,7 +5,7 @@ from time import time
 from pydantic import BaseModel, Field
 from llm import LLMClient,ModelSize
 import prompt_library
-from datamodels import EntityEdge, EntityNode, EpisodicNode, GraphitiClients, utc_now, Edge, create_entity_edge_embeddings
+from datamodels import EntityEdge, EntityNode, EpisodicNode, MemorexClients, utc_now, Edge, create_entity_edge_embeddings
 from helpers import *
 import typing
 from search import search, SearchResults, SearchFilters
@@ -65,7 +65,7 @@ def ensure_utc(value: datetime | None) -> datetime | None:
 
 
 async def extract_edges(
-    clients: GraphitiClients,
+    clients: MemorexClients,
     episode: EpisodicNode,
     nodes: list[EntityNode],
     previous_episodes: list[EpisodicNode],
@@ -471,7 +471,7 @@ async def resolve_extracted_edge(
 
 
 async def resolve_extracted_edges(
-    clients: GraphitiClients,
+    clients: MemorexClients,
     extracted_edges: list[EntityEdge],
     episode: EpisodicNode,
     entities: list[EntityNode],

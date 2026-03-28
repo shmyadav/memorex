@@ -442,7 +442,7 @@ class EpisodicNode(Node):
         return episodes
 
 
-class GraphitiClients(BaseModel):
+class MemorexClients(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True) # Allow non-Pydantic runtime objects (drivers / clients) as fields
     driver: GraphDriver
     llm_client: LLMClient

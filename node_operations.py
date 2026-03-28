@@ -509,7 +509,7 @@ async def filter_existing_duplicate_of_edges(
 
 
 async def resolve_extracted_nodes(
-    clients: GraphitiClients,#needs both llm and driver client
+    clients: MemorexClients,#needs both llm and driver client
     extracted_nodes: list[EntityNode],
     episode: EpisodicNode | None = None,
     previous_episodes: list[EpisodicNode] | None = None,
@@ -567,7 +567,7 @@ async def resolve_extracted_nodes(
     )
 
 async def _collect_candidate_nodes(
-    clients: GraphitiClients,
+    clients: MemorexClients,
     extracted_nodes: list[EntityNode],
     existing_nodes_override: list[EntityNode] | None,
 ) -> list[EntityNode]:
@@ -602,7 +602,7 @@ async def _collect_candidate_nodes(
 
 
 async def extract_attributes_from_nodes(
-    clients: GraphitiClients,
+    clients: MemorexClients,
     nodes: list[EntityNode],
     episode: EpisodicNode | None = None,
     previous_episodes: list[EpisodicNode] | None = None,
