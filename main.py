@@ -14,6 +14,10 @@ from node_operations import extract_nodes
 from node_operations import *
 from edge_operations import extract_edges, resolve_edge_pointers, resolve_extracted_edges
 from bulk_utils import add_nodes_and_edges_bulk
+from search import search
+from search_configs import SearchConfig
+from search_filters import SearchFilters
+from search_config_recipies import COMBINED_HYBRID_SEARCH_RRF
 
 class AddEpisodeResults(BaseModel):
     episode: EpisodicNode
@@ -345,6 +349,36 @@ class Memorex:
 
         return resolved_edges, invalidated_edges
 
+    async def search(
+        self,
+        query: str,
+        group_ids: list[str] | None = None,
+        config: SearchConfig | None = None,
+        search_filter: SearchFilters | None = None,
+        center_node_uuid: str | None = None,
+        bfs_origin_node_uuids: list[str] | None = None,
+        query_vector: list[float] | None = None
+    ) -> SearchResults:
+        """
+        Search the graph for nodes, edges, and episodes.
+        """
+        if config is None:
+            config = COMBINED_HYBRID_SEARCH_RRF
+            
+        if search_filter is None:
+            search_filter = SearchFilters()
+
+        return await search(
+            self.clients,
+            query,
+            group_ids,
+            config,
+            search_filter,
+            center_node_uuid,
+            bfs_origin_node_uuids,
+            query_vector,
+            self.driver
+        )
 
     async def retrieve_episodes(
             self,
@@ -429,7 +463,7 @@ async def main():
     # Initialize Memorex with Neo4j connection
     memorex = Memorex()
 
-    # await memorex.driver.build_indices_and_constraints()
+    await memorex.driver.build_indices_and_constraints()
     await memorex.add_episode(
         uuid="123",
         name="Whatsupp",
@@ -440,7 +474,19 @@ async def main():
         group_id="test_group",
     )
 
-
+    print("\n--- Retrieving ---")
+    query = "What is the user's favorite food?"
+    print(f"c: {query}")
+    
+    results = await memorex.search(query=query)
+    
+    print(f"\nExtracted Nodes ({len(results.nodes)}):")
+    for node in results.nodes:
+        print(f"- {node.name}: {node.summary}")
+        
+    print(f"\nExtracted Edges ({len(results.edges)}):")
+    for edge in results.edges:
+        print(f"- {edge.fact}")
 
 if __name__ == '__main__':
     asyncio.run(main())

@@ -16,5 +16,5 @@ COPY . .
 # Set environment variables from .env (if provided via docker-compose)
 # No need to explicitly use ENV here, as docker-compose handles it
 
-# Run main.py when the container launches
-CMD ["python", "main.py"]
+# Run the FastAPI server via uvicorn
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000"]
